@@ -21,3 +21,7 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - Adding style to React apps
 
 ## Part 3 - Programming a server with NodeJS and Express 
+- NodeJS and Express
+- Deploying app to Internet
+- Saving data to MongoDB
+- Validation and ESlint
