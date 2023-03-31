@@ -25,3 +25,5 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - Deploying app to Internet
 - Saving data to MongoDB
 - Validation and ESlint
+
+## Part 3 - Testing Express servers, user administration
