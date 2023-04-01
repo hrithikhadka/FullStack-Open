@@ -31,3 +31,6 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - Testing the backend
 - User administration
 - Token authentication
+
+## Part 5 - Testing React apps
+
