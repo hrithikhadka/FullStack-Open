@@ -33,4 +33,8 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - Token authentication
 
 ## Part 5 - Testing React apps
+- Login Frontend
+- props.children and proptypes
+- Testing React apps
+- End to end testing
 
