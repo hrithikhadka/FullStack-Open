@@ -39,3 +39,9 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - End to end testing
 
 ## Part 6 - Advance State Management
+- Flux-architecture and Redux
+- Many reducers
+- Communicating with server in a redux application
+- React Query, useReducer and the context
+- connect (the old part)
+
