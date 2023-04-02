@@ -38,3 +38,4 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - Testing React apps
 - End to end testing
 
+## Part 6 - Advance State Management
