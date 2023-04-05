@@ -45,3 +45,6 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - React Query, useReducer and the context
 - connect (the old part)
 
+## Part 7 - React router, custom hooks, styling app with CSS and webpack
+
+
