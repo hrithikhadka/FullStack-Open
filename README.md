@@ -26,7 +26,7 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - Saving data to MongoDB
 - Validation and ESlint
 
-## Part 4 - Testing Express servers, user administration
+## [Part 4 - Testing Express servers, user administration](https://fullstackopen.com/en/part4)
 - Structure of backend application, introduction to testing
 - Testing the backend
 - User administration
