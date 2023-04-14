@@ -32,7 +32,7 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 - User administration
 - Token authentication
 
-## Part 5 - Testing React apps
+## [Part 5 - Testing React apps](https://fullstackopen.com/en/part3)
 - Login Frontend
 - props.children and proptypes
 - Testing React apps
