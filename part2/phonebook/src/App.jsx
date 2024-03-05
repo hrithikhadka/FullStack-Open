@@ -79,7 +79,13 @@ const App = () => {
     if (checkName) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons([...persons, { name: newName, number: newNumber }]);
+      const newPerson = { name: newName, number: newNumber };
+      //make POST request to the server endpoint with newPerson data
+      axios
+        .post("http://localhost:3001/persons", newPerson)
+        .then((response) => {
+          setPersons([...persons, response.data]);
+        });
     }
     setNewName("");
     setNewNumber("");
