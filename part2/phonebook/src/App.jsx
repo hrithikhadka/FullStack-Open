@@ -2,13 +2,20 @@ import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import axios from "axios";
+import phonebookService from "./services/phonebook";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterByName, setFilterByName] = useState([]);
+
+  useEffect(() => {
+    phonebookService.getAll().then((response) => {
+      // console.log(response.data);
+      setPersons(response);
+    });
+  }, []);
 
   const handleNewName = (e) => {
     e.preventDefault();
@@ -28,11 +35,9 @@ const App = () => {
     } else {
       const newPerson = { name: newName, number: newNumber };
       //make POST request to the server endpoint with newPerson data
-      axios
-        .post("http://localhost:3001/persons", newPerson)
-        .then((response) => {
-          setPersons([...persons, response.data]);
-        });
+      phonebookService.create(newPerson).then((response) => {
+        setPersons([...persons, response]);
+      });
     }
     setNewName("");
     setNewNumber("");
@@ -45,13 +50,6 @@ const App = () => {
     );
     setFilterByName(filtered);
   };
-
-  useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      // console.log(response.data);
-      setPersons(response.data);
-    });
-  }, []);
 
   return (
     <div>
