@@ -43,6 +43,21 @@ const App = () => {
     setNewNumber("");
   };
 
+  const deletePersonDetails = (id) => {
+    //console.log("person details of " + id + " needs to be deleted!!");
+    //get person object with matching id
+    const getPersonObj = persons.find((person) => person.id === id);
+    if (window.confirm(`Delete ${getPersonObj.name}?`)) {
+      phonebookService.deletePersonDetail(id).then(() => {
+        console.log("Person with id " + id + " is deleted from phonebook ");
+        // console.log("Server Response:", response);
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    } else {
+      console.log("unsuccessful!");
+    }
+  };
+
   const handleFilter = (event) => {
     const value = event.target.value;
     const filtered = persons.filter((person) =>
@@ -66,7 +81,11 @@ const App = () => {
       />
       <h2>Numbers</h2>
 
-      <Persons persons={persons} filterByName={filterByName} />
+      <Persons
+        persons={persons}
+        filterByName={filterByName}
+        deletePersonDetails={deletePersonDetails}
+      />
     </div>
   );
 };
