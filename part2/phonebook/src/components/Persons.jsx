@@ -5,14 +5,14 @@ const Persons = ({ persons, filterByName, deletePersonDetails }) => {
       {filterByName.length > 0
         ? filterByName.map((person) => (
             <Person
-              key={person.name}
+              key={person.id}
               person={person}
               deletePersonDetails={deletePersonDetails}
             />
           ))
         : persons.map((person) => (
             <Person
-              key={person.name}
+              key={person.id}
               person={person}
               deletePersonDetails={deletePersonDetails}
             />
