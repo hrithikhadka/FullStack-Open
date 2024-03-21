@@ -4,11 +4,13 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import phonebookService from "./services/phonebook";
 import axios from "axios";
+import Notification from "./components/Notification";
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterByName, setFilterByName] = useState([]);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     phonebookService.getAll().then((response) => {
@@ -47,6 +49,10 @@ const App = () => {
           .updatePerson(personObj.id, newPersonObj)
           .then(() => {
             setPersons(updatedPhonebook);
+            setSuccessMessage(`Updated ${personObj.name}`);
+            setTimeout(() => {
+              setSuccessMessage(null);
+            }, 5000);
             setNewName("");
             setNewNumber("");
           })
@@ -62,6 +68,11 @@ const App = () => {
         .create(newPerson)
         .then((response) => {
           setPersons([...persons, response]);
+          setSuccessMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
+          console.log(response);
         })
         .catch((error) => {
           console.log("Error creating a new Person");
@@ -97,6 +108,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification success={successMessage} />
 
       <Filter handleFilter={handleFilter} />
 
