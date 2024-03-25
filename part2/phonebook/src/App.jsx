@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterByName, setFilterByName] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     phonebookService.getAll().then((response) => {
@@ -57,8 +58,16 @@ const App = () => {
             setNewNumber("");
           })
           .catch((error) => {
-            console.log("Error updating person");
-            alert();
+            // console.log("Error updating person");
+            // alert();
+            setErrorMessage(
+              `Information of ${personObj.name} has already been removed from server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+            //filtering out
+            setPersons(persons.filter((person) => person.id !== personObj.id));
           });
       }
     } else {
@@ -87,13 +96,29 @@ const App = () => {
     //get person object with matching id
     const getPersonObj = persons.find((person) => person.id === id);
     if (window.confirm(`Delete ${getPersonObj.name}?`)) {
-      phonebookService.deletePersonDetail(id).then(() => {
-        console.log("Person with id " + id + " is deleted from phonebook ");
-        // console.log("Server Response:", response);
-        setPersons(persons.filter((person) => person.id !== id));
-      });
-    } else {
-      console.log("unsuccessful!");
+      phonebookService
+        .deletePersonDetail(id)
+        .then(() => {
+          console.log("Person with id " + id + " is deleted from phonebook ");
+          // console.log("Server Response:", response);
+          setSuccessMessage(`Deleted ${getPersonObj.name}`);
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          // console.log("Error updating person");
+          // alert();
+          setErrorMessage(
+            `Information of ${getPersonObj.name} has already been removed from server`
+          );
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+          //filtering out
+          setPersons(persons.filter((person) => person.id !== id));
+        });
     }
   };
 
@@ -109,7 +134,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notification success={successMessage} />
+      <Notification success={successMessage} error={errorMessage} />
 
       <Filter handleFilter={handleFilter} />
 
