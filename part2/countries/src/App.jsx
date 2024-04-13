@@ -5,6 +5,8 @@ import axios from "axios";
 function App() {
   const [query, setQuery] = useState("");
   const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     // console.log("effect run, countries is now ", countries);
@@ -35,6 +37,11 @@ function App() {
     country.name.common.toLowerCase().includes(query.toLowerCase())
   );
 
+  const handleShowCountry = (country) => {
+    setSelectedCountry(country);
+    setShow(!show);
+  };
+
   return (
     <>
       <p>
@@ -49,7 +56,15 @@ function App() {
           ) : (
             <div>
               {filterCountries.map((country, index) => (
-                <div key={index}>{country.name.common}</div>
+                <div key={index}>
+                  {country.name.common}{" "}
+                  <button onClick={() => handleShowCountry(country)}>
+                    {selectedCountry === country && show ? "hide" : "show"}
+                  </button>
+                  {selectedCountry === country && show && (
+                    <CountryDetails country={country} />
+                  )}
+                </div>
               ))}
             </div>
           )}
