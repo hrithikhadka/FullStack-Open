@@ -84,7 +84,10 @@ const App = () => {
           console.log(response);
         })
         .catch((error) => {
-          console.log("Error creating a new Person");
+          setErrorMessage(
+            error.response?.data?.error || "Error creating a new person."
+          );
+          setTimeout(() => setErrorMessage(null), 5000);
         });
     }
     setNewName("");
