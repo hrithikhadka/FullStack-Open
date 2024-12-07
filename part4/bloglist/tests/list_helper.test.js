@@ -134,6 +134,26 @@ describe("most blogs", () => {
   });
 });
 
+describe("most likes", () => {
+  test("of empty list is null", () => {
+    const result = listHelper.mostLikes([]);
+    assert.strictEqual(result, null);
+  });
+
+  test("when list has one blog", () => {
+    const result = listHelper.mostLikes(listWithOneBlog);
+    assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", likes: 5 });
+  });
+
+  test("of a bigger list is calculated right", () => {
+    const result = listHelper.mostLikes(blogs);
+    assert.deepStrictEqual(result, {
+      author: "Edsger W. Dijkstra",
+      likes: 17,
+    });
+  });
+});
+
 test("dummy returns one", () => {
   const blogs = [];
 
