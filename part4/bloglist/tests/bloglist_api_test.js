@@ -39,6 +39,14 @@ test.only("blog list application returns the correct amount of blog posts", asyn
   assert.strictEqual(response.body.length, initialBlogs.length);
 });
 
+test.only("blog posts have an id property", async () => {
+  const response = await api.get("/api/blogs");
+
+  response.body.forEach((blog) => {
+    assert.notStrictEqual(blog.id, undefined);
+  });
+});
+
 after(() => {
   mongoose.connection.close();
 });
