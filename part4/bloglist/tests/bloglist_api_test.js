@@ -70,6 +70,24 @@ test.only("a blog can be added", async () => {
   assert(titles.includes("testing blog"));
 });
 
+test.only("if likes property missing, it defaults to value 0", async () => {
+  const newBlog = {
+    title: "testing no likes",
+    author: "NoLikes",
+    url: "https://testingnolikes.com",
+  };
+
+  const response = await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  assert.strictEqual(response.body.likes, 0);
+
+  // console.log(response.body.likes);
+});
+
 after(() => {
   mongoose.connection.close();
 });
