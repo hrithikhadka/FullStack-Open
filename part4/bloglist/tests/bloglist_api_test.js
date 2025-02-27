@@ -26,20 +26,23 @@ beforeEach(async () => {
   await Blog.insertMany(initialBlogs);
 });
 
-test.only("blogs are returned as JSON", async () => {
+//test that verifies the blog post application returns blog posts in JSON format.
+test("blogs are returned as JSON", async () => {
   await api
     .get("/api/blogs")
     .expect(200)
     .expect("Content-Type", /application\/json/);
 });
 
-test.only("blog list application returns the correct amount of blog posts", async () => {
+//testing for correct amount of blog post
+test("blog list application returns the correct amount of blog posts", async () => {
   const response = await api.get("/api/blogs");
   console.log("Total blogs returned:", response.body.length);
   assert.strictEqual(response.body.length, initialBlogs.length);
 });
 
-test.only("blog posts have an id property", async () => {
+//testing for unique identifier property of the blog posts is named id.
+test("blog posts have an id property", async () => {
   const response = await api.get("/api/blogs");
 
   response.body.forEach((blog) => {
@@ -47,7 +50,8 @@ test.only("blog posts have an id property", async () => {
   });
 });
 
-test.only("a blog can be added", async () => {
+//a test that verifies that making an HTTP POST request creates a new blog post.
+test("a blog can be added", async () => {
   const newBlog = {
     title: "testing blog",
     author: "Tester",
@@ -70,22 +74,43 @@ test.only("a blog can be added", async () => {
   assert(titles.includes("testing blog"));
 });
 
-test.only("if likes property missing, it defaults to value 0", async () => {
+//a test that verifies that if the likes property is missing from the request, it will default to the value 0.
+test("if likes property missing, it defaults to value 0", async () => {
   const newBlog = {
     title: "testing no likes",
     author: "NoLikes",
     url: "https://testingnolikes.com",
   };
 
-  const response = await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(201)
-    .expect("Content-Type", /application\/json/);
+  const response = await api.post("/api/blogs").send(newBlog).expect(201);
 
   assert.strictEqual(response.body.likes, 0);
 
   // console.log(response.body.likes);
+});
+
+//testing for missing title, blog is not added
+test("if title missing, the blog is not added and responds with 400 status", async () => {
+  const newBlog = {
+    author: "Mary",
+    url: "https://mary.com",
+  };
+  await api.post("/api/blogs").send(newBlog).expect(400);
+
+  const allBlogs = await Blog.find({});
+  assert.strictEqual(allBlogs.length, initialBlogs.length);
+});
+
+//testing for missing url
+test("if url missing, the blog is not added and responds with 400 status", async () => {
+  const newBlog = {
+    author: "Mary",
+    title: "Testing No URL",
+  };
+  await api.post("/api/blogs").send(newBlog).expect(400);
+
+  const allBlogs = await Blog.find({});
+  assert.strictEqual(allBlogs.length, initialBlogs.length);
 });
 
 after(() => {
