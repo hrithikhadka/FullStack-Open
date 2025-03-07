@@ -6,24 +6,11 @@ const assert = require("node:assert");
 const { test, after, beforeEach } = require("node:test");
 const api = supertest(app);
 
-const initialBlogs = [
-  {
-    title: "blog 1",
-    author: "harry",
-    url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    likes: 3,
-  },
-  {
-    title: "blog 2",
-    author: "pete",
-    url: "https://reactpatterns.com/",
-    likes: 9,
-  },
-];
+const helper = require("./test_helper");
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  await Blog.insertMany(initialBlogs);
+  await Blog.insertMany(helper.initialBlogs);
 });
 
 //test that verifies the blog post application returns blog posts in JSON format.
@@ -37,14 +24,13 @@ test("blogs are returned as JSON", async () => {
 //testing for correct amount of blog post
 test("blog list application returns the correct amount of blog posts", async () => {
   const response = await api.get("/api/blogs");
-  console.log("Total blogs returned:", response.body.length);
-  assert.strictEqual(response.body.length, initialBlogs.length);
+  // console.log("Total blogs returned:", response.body.length);
+  assert.strictEqual(response.body.length, helper.initialBlogs.length);
 });
 
 //testing for unique identifier property of the blog posts is named id.
 test("blog posts have an id property", async () => {
   const response = await api.get("/api/blogs");
-
   response.body.forEach((blog) => {
     assert.notStrictEqual(blog.id, undefined);
   });
@@ -65,12 +51,10 @@ test("a blog can be added", async () => {
     .expect(201)
     .expect("Content-Type", /application\/json/);
 
-  const response = await api.get("/api/blogs");
+  const blogsAtEnd = await helper.blogInDb();
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1);
 
-  const titles = response.body.map((blog) => blog.title);
-
-  assert.strictEqual(response.body.length, initialBlogs.length + 1);
-
+  const titles = blogsAtEnd.map((blog) => blog.title);
   assert(titles.includes("testing blog"));
 });
 
@@ -83,9 +67,7 @@ test("if likes property missing, it defaults to value 0", async () => {
   };
 
   const response = await api.post("/api/blogs").send(newBlog).expect(201);
-
   assert.strictEqual(response.body.likes, 0);
-
   // console.log(response.body.likes);
 });
 
@@ -97,8 +79,8 @@ test("if title missing, the blog is not added and responds with 400 status", asy
   };
   await api.post("/api/blogs").send(newBlog).expect(400);
 
-  const allBlogs = await Blog.find({});
-  assert.strictEqual(allBlogs.length, initialBlogs.length);
+  const blogsAtEnd = await helper.blogInDb();
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
 });
 
 //testing for missing url
@@ -109,8 +91,8 @@ test("if url missing, the blog is not added and responds with 400 status", async
   };
   await api.post("/api/blogs").send(newBlog).expect(400);
 
-  const allBlogs = await Blog.find({});
-  assert.strictEqual(allBlogs.length, initialBlogs.length);
+  const blogsAtEnd = await helper.blogInDb();
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
 });
 
 after(() => {
