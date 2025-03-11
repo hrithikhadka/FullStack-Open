@@ -95,6 +95,21 @@ test("if url missing, the blog is not added and responds with 400 status", async
   assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
 });
 
+//testing for deleting a single blog post resource
+test("a blog can be deleted", async () => {
+  const blogAtStart = await helper.blogInDb();
+  const blogToDelete = blogAtStart[0];
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+  const blogsAtEnd = await helper.blogInDb();
+
+  const titles = blogsAtEnd.map((blog) => blog.title);
+  assert(!titles.includes(blogToDelete.title));
+
+  assert.strictEqual(blogsAtEnd.length, blogAtStart.length - 1);
+});
+
 after(() => {
   mongoose.connection.close();
 });
